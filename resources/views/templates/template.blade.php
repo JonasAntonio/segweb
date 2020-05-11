@@ -52,7 +52,7 @@
                                 Gerenciar
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/term_types">Tipos de Termos</a>
+                                <a class="dropdown-item" href="/term_types">Categorias de Termos</a>
                                 <a class="dropdown-item" href="/terms">Termos</a>
                             </div>
                         </li>
