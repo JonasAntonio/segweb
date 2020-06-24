@@ -20,9 +20,9 @@
             $file_content = $value['content'];
             $file_results = $value['results'];
             $file_repo_file = $value['file'];
-            $file_path = explode('/', explode($file->original_file_name, $file_repo_file->file_path)[1]);
+            $file_path = explode(DIRECTORY_SEPARATOR, explode($file->original_file_name, $file_repo_file->file_path)[1]);
             unset($file_path[0]);
-            $file_path = $file->original_file_name.'/'.implode('/', $file_path);
+            $file_path = $file->original_file_name.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $file_path);
         @endphp
         <div class="card mt-2">
             <div class="card-header clickable" data-toggle="collapse" data-target="#collapse-{{$key}}" title="Click here to see file details">

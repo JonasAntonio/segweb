@@ -29,9 +29,9 @@
             if($file->type == 'File') {
                 $file_path = $file->original_file_name;
             } else {
-                $file_path = explode('/', explode($file->original_file_name, $file_repo_file->file_path)[1]);
+                $file_path = explode(DIRECTORY_SEPARATOR, explode($file->original_file_name, $file_repo_file->file_path)[1]);
                 unset($file_path[0]);
-                $file_path = $file->original_file_name.'/'.implode('/', $file_path);
+                $file_path = $file->original_file_name.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $file_path);
             }
         @endphp
         <div class="card mt-2">

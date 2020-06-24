@@ -106,7 +106,7 @@ class FileController extends Controller {
 
     public static function getFileContentArray($id_file) {
         $file = DB::table('files')->find($id_file);
-        $full_file_path = base_path('storage/app/'.$file->file_path);
+        $full_file_path = base_path('storage'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.$file->file_path);
         if(file_exists($full_file_path)) {
             $fn = fopen($full_file_path, 'r');
             $line_number = 1;

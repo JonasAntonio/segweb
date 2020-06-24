@@ -13,6 +13,7 @@ use SegWeb\Http\Controllers\FileResultsController;
 
 class GithubFilesController extends Controller {
     private $github_files_ids = NULL;
+    private $storage_folder = 'storage'.DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR;
 
     public function index() {
         return view('github');
@@ -32,16 +33,17 @@ class GithubFilesController extends Controller {
                 $github_link = substr($request->github_link, -1) == '/' ? substr_replace($request->github_link ,"", -1)  : $request->github_link;
                 
                 $url = $github_link.'/archive/'.$request->branch.'.zip';
-                $folder = 'github_uploads/';
+                $folder = 'github_uploads'.DIRECTORY_SEPARATOR;
                 $now = date('ymdhis');
                 $name = $folder.$now.'_'.substr($url, strrpos($url, '/') + 1);
                 $put = Storage::put($name, file_get_contents($url));
 
                 if($put) {
                     // Extrai e exclui o arquivo .zip do github
-                    $file_location = base_path('storage/app/'.$folder.$now.'_'.$request->branch);
-                    Zipper::make(base_path('storage/app/'.$name))->extractTo($file_location);
-                    unlink(base_path('storage/app/'.$name));
+                    
+                    $file_location = base_path($this->storage_folder.$folder.$now.'_'.$request->branch);
+                    Zipper::make(base_path($this->storage_folder.$name))->extractTo($file_location);
+                    // unlink(base_path($this->storage_folder.$name));
                     
                     // Salva o registro do repositório do github
                     $file = new File();
@@ -113,8 +115,8 @@ class GithubFilesController extends Controller {
             $term = new TermController();
             $terms = $term->getTerm();
             foreach($ffs as $ff) {
-                $full_file_path = $dir."/".$ff;
-                $file_path = explode("storage/app/", $full_file_path)[1];
+                $full_file_path = $dir.DIRECTORY_SEPARATOR.$ff;
+                $file_path = explode($this->storage_folder, $full_file_path)[1];
                 if(is_dir($full_file_path)) {
                     $this->analiseGithubFiles($full_file_path, $repository_id);
                 } else {
@@ -161,9 +163,9 @@ class GithubFilesController extends Controller {
         $array = [];
         foreach($file_contents as $value) {
             $file_results = $value['results'];
-            $file_path = explode('/', explode($file->original_file_name, $value['file']->file_path)[1]);
+            $file_path = explode(DIRECTORY_SEPARATOR, explode($file->original_file_name, $value['file']->file_path)[1]);
             unset($file_path[0]);
-            $file_path = $file->original_file_name.'/'.implode('/', $file_path);
+            $file_path = $file->original_file_name.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, $file_path);
 
             $array[] = ['file' => $file_path];
 
